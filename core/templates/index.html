@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>💰 Доходы</h5>
+                <h2>{{ total_income|floatformat:2 }} ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5>💸 Расходы</h5>
+                <h2>{{ total_expense|floatformat:2 }} ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5>📊 Баланс</h5>
+                <h2>{{ balance|floatformat:2 }} ₽</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="expenseChart"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="monthlyChart"></canvas>
+    </div>
+</div>
+
+<script>
+fetch('/admin/login/'); // dummy
+const categoryData = {{ expenses_by_category|safe }};
+new Chart(document.getElementById('expenseChart'), {
+    type: 'pie',
+    data: {
+        labels: categoryData.map(x => x.category__name),
+        datasets: [{
+            data: categoryData.map(x => x.total),
+            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
+        }]
+    }
+});
+
+const monthly = {{ monthly_data|safe }};
+new Chart(document.getElementById('monthlyChart'), {
+    type: 'line',
+    data: {
+        labels: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+        datasets: [
+            { label: 'Доходы', data: monthly.map(x => x.income), borderColor: 'green' },
+            { label: 'Расходы', data: monthly.map(x => x.expense), borderColor: 'red' }
+        ]
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'transaction_create' %}" class="btn btn-primary mb-3">➕ Добавить</a>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Дата</th><th>Категория</th><th>Сумма</th><th>Описание</th></tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.date }}</td>
+            <td>{{ t.category.name }}</td>
+            <td class="{% if t.category.category_type == 'expense' %}text-danger{% else %}text-success{% endif %}">
+                {{ t.amount }} ₽
+            </td>
+            <td>{{ t.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
