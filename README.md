@@ -28,9 +28,3 @@ cd finance-manager
 
 Запустить контейнеры
 docker-compose up --build -d
-
-Применить миграции
-docker-compose exec web python manage.py migrate
-
-Создать суперпользователя
-docker-compose exec web python manage.py createsuperuser
