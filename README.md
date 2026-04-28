@@ -28,3 +28,13 @@ cd finance-manager
 
 Запустить контейнеры
 docker-compose up --build -d
+
+🧪 Запуск тестов
+docker-compose exec web python manage.py test -v 2
+
+📁 Структура
+core/
+├── models.py      # Категории и транзакции
+├── views.py       # Логика + агрегации
+├── forms.py       # Форма транзакции
+└── templates/     # Шаблоны с графиками
